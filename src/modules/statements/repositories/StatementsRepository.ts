@@ -40,12 +40,12 @@ export class StatementsRepository implements IStatementsRepository {
       { balance: number } | { balance: number, statement: Statement[] }
     >
   {
-    const statement = await this.repository.find({
+    let statement = await this.repository.find({
       where: { user_id }
     });
 
     const balance = statement.reduce((acc, operation) => {
-      if (operation.type === 'deposit') {
+      if (operation.type === 'deposit' || operation.type === 'transfer') {
         return acc + operation.amount;
       } else {
         return acc - operation.amount;
